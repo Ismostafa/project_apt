@@ -1,0 +1,55 @@
+/* Styling for Header */
+.header {
+  position: fixed; /* Set header position to fixed */
+  top: 0; /* Align header to the top */
+  left: 0; /* Align header to the left */
+  width: 100%; /* Set header width to 100% */
+  background-color: #333; /* Set background color */
+  color: #fff; /* Set text color */
+  padding: 15px; /* Add padding */
+  z-index: 1000; /* Ensure the header stays on top of other content */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for depth */
+  display: flex; /* Display header as flex */
+  justify-content: space-between; /* Align items to the left and right */
+  align-items: center; /* Center align items vertically */
+}
+
+/* Styling for content under header */
+.content {
+  margin-top: 80px; /* Add margin top to push content below header */
+  padding: 20px; /* Add padding */
+}
+
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+}
+
+.nav-item {
+  margin-right: 20px; /* Adjust spacing between buttons */
+}
+
+.nav-button,
+.nav-link {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: 8px 20px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.nav-button:hover,
+.nav-link:hover {
+  background-color: #0056b3;
+}

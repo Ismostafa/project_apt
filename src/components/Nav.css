@@ -1,0 +1,52 @@
+/* Nav.css */
+
+/* Styling for the entire Nav component */
+.nav-container {
+    padding: 20px; /* Add padding */
+  }
+  
+  /* Styling for the header */
+  .header {
+    background-color: #333; /* Set background color */
+    color: #fff; /* Set text color */
+    padding: 15px; /* Add padding */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for depth */
+    display: flex; /* Display header as flex */
+    justify-content: space-between; /* Align items to the left and right */
+    align-items: center; /* Center align items vertically */
+  }
+  
+  /* Styling for the logo */
+  .logo {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  /* Styling for the navigation tabs */
+  .nav-tabs {
+    margin-top: 20px; /* Add margin top */
+  }
+  
+  /* Styling for individual tab */
+  .nav-tab {
+    text-transform: none; /* Prevent text transformation */
+    font-weight: bold; /* Set font weight */
+    font-size: 16px; /* Set font size */
+    color: #000; /* Set text color */
+    padding: 10px 20px; /* Add padding */
+    cursor: pointer; /* Set cursor to pointer */
+  }
+  
+  /* Styling for active tab */
+  .nav-tab.active {
+    background-color: #007bff; /* Set background color */
+    color: #fff; /* Set text color */
+  }
+  
+  /* Styling for content */
+  .content {
+    padding: 20px; /* Add padding */
+  }
+.title{
+    margin-top: 60px;
+}  

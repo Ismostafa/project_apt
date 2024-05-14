@@ -1,0 +1,103 @@
+.owned-documents {
+    padding: 20px;
+  }
+  
+  .document-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Adjust the minimum and maximum width as needed */
+    gap: 20px;
+  }
+  
+  .document-block {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 300px; /* Adjust the maximum width as needed */
+    margin: 0 auto; /* Center the block horizontally */
+    overflow: hidden; /* Prevent content from overflowing */
+  }
+  
+  .document-block h3 {
+    margin-top: 0;
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .button-container button {
+    background-color: transparent;
+    color: #007bff;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+    margin-top: 5px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .button-container button:hover {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .create-button {
+    background-color: #007bff;
+    color: #ffffff;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    margin-top: 10px;
+  }
+  
+  .create-button:hover {
+    background-color: #0056b3;
+  }
+  .popup-form {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .popup-form input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  .popup-form button {
+    padding: 8px 16px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .popup-form button:hover {
+    background-color: #45a049;
+  }
+  
+  .popup-form button:last-child {
+    background-color: #f44336;
+  }
+  
+  .popup-form button:last-child:hover {
+    background-color: #da190b;
+  }
+  
