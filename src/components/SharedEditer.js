@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import "./OwnedDocuments.css";
 import Cookies from "js-cookie";
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 function OwnedDocuments() {
   const [documents, setDocuments] = useState([]);
   const token = Cookies.get("token");
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const config = {
     headers: { Authorization: `Bearer ${token}` },
@@ -35,7 +37,7 @@ function OwnedDocuments() {
   };
 
   const handleOpen = (documentId) => {
-    // Handle open action
+    navigate(`/editor/${documentId}`);
   };
 
 

@@ -21,7 +21,7 @@ function OwnedDocuments() {
 
 
   const token = Cookies.get("token");
-
+  const username2 = localStorage.getItem("username");
   const config = {
     headers: { Authorization: `Bearer ${token}` },
   };
@@ -31,7 +31,7 @@ function OwnedDocuments() {
 
 
   useEffect(() => {
-
+console.log("userrrrrrrrrrrrrrrrrrrrrrrrr--->>>>>",username2);
     console.log("tokenndoccccc==============", token);
     axios
       .get(`http://localhost:8080/api/files/my`, config)
@@ -48,6 +48,7 @@ function OwnedDocuments() {
   }, []);
 
   const handleSubmitForm = async () => {
+
     try {
       const response = await axios.post(
         'http://localhost:8080/api/files',
@@ -122,7 +123,7 @@ function OwnedDocuments() {
         `http://localhost:8080/api/files/share`,
         {
           fileId: Shareid,
-          userId: "663f82c490676353a161a7e1", 
+          username: ShareUsername, 
           role: userType // Assuming you have userType state variable for Editor/Viewer
         },
         config
