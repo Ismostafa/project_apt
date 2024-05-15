@@ -176,7 +176,8 @@ console.log("userrrrrrrrrrrrrrrrrrrrrrrrr--->>>>>",username2);
   };
 
   const handleOpen = (documentId) => {
-    navigate(`/editor/${documentId}`);
+    navigate(`/editor/${documentId}`, { state:"Editor"  });
+
   };
 
   const handleCreate = async () => {

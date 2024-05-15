@@ -4,7 +4,7 @@ import "./OwnedDocuments.css";
 import Cookies from "js-cookie";
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
-function OwnedDocuments() {
+function SharedEditer() {
   const [documents, setDocuments] = useState([]);
   const token = Cookies.get("token");
   const navigate = useNavigate(); // Initialize useNavigate
@@ -28,18 +28,14 @@ function OwnedDocuments() {
       .catch((error) => {
         console.error("Errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr:", error);
       });
+      
   }, []);
 
 
 
-  const handleShare = (documentId) => {
-    // Handle share action
+  const handleOpen = (documentId, role) => {
+    navigate(`/editor/${documentId}`, { state: { role } });
   };
-
-  const handleOpen = (documentId) => {
-    navigate(`/editor/${documentId}`);
-  };
-
 
 
   return (
@@ -49,8 +45,9 @@ function OwnedDocuments() {
         {documents.map((document) => (
           <div key={document.id} className="document-block">
             <h3>{document.name}</h3>
+            {/* <p>Owner: {document.ownerName}</p> Display the owner's name */}
             <div className="button-container">
-              <button onClick={() => handleOpen(document.id)}>Open</button>
+              <button onClick={() => handleOpen(document.id, document.role)}>Open</button>
             </div>
           </div>
         ))}
@@ -60,4 +57,4 @@ function OwnedDocuments() {
   );
 }
 
-export default OwnedDocuments;
+export default SharedEditer;
