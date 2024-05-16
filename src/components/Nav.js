@@ -7,7 +7,7 @@ import "./Nav.css"
 // import './Header.css';
 function Nav() {
   const [activeNavItem, setActiveNavItem] = useState(0);
-
+const username=localStorage.getItem('username');
   const handleTabChange = (event, newValue) => {
     setActiveNavItem(newValue);
   };
@@ -18,7 +18,7 @@ function Nav() {
 
       <div>
         <div className="draft">
-          <h1 className="title" >Home Page</h1>
+          <h1 className="title" >Welcome: {username}</h1>
           <div class="horizontalLine"></div>
          
         </div>

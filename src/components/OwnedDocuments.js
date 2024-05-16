@@ -3,6 +3,11 @@ import axios from 'axios';
 import "./OwnedDocuments.css";
 import Cookies from "js-cookie";
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { MdDriveFileRenameOutline } from "react-icons/md";
+import { Button } from 'react-bootstrap';
+import { MdDelete } from "react-icons/md";
+import { FaShare } from "react-icons/fa";
+import { FaFolderOpen } from "react-icons/fa6";
 
 function OwnedDocuments() {
   const [documents, setDocuments] = useState([]);
@@ -31,7 +36,7 @@ function OwnedDocuments() {
 
 
   useEffect(() => {
-console.log("userrrrrrrrrrrrrrrrrrrrrrrrr--->>>>>",username2);
+    console.log("userrrrrrrrrrrrrrrrrrrrrrrrr--->>>>>", username2);
     console.log("tokenndoccccc==============", token);
     axios
       .get(`http://localhost:8080/api/files/my`, config)
@@ -123,7 +128,7 @@ console.log("userrrrrrrrrrrrrrrrrrrrrrrrr--->>>>>",username2);
         `http://localhost:8080/api/files/share`,
         {
           fileId: Shareid,
-          username: ShareUsername, 
+          username: ShareUsername,
           role: userType // Assuming you have userType state variable for Editor/Viewer
         },
         config
@@ -176,7 +181,7 @@ console.log("userrrrrrrrrrrrrrrrrrrrrrrrr--->>>>>",username2);
   };
 
   const handleOpen = (documentId) => {
-    navigate(`/editor/${documentId}`, { state:"Editor"  });
+    navigate(`/editor/${documentId}`, { state: "Editor" });
 
   };
 
@@ -198,10 +203,36 @@ console.log("userrrrrrrrrrrrrrrrrrrrrrrrr--->>>>>",username2);
           <div key={document.id} className="document-block">
             <h3>{document.name}</h3>
             <div className="button-container">
-              <button onClick={() => handleDelete(document.id)}>Delete</button>
-              <button onClick={() => handleRename(document.id)}>Rename</button>
-              <button onClick={() => handleShare(document.id)}>Share</button>
-              <button onClick={() => handleOpen(document.id)}>Open</button>
+              <Button
+
+                onClick={() => handleDelete(document.id)}
+
+              >
+                <MdDelete /> Delete
+              </Button>
+
+              <Button
+
+                onClick={() => handleRename(document.id)}
+
+              >
+                <MdDriveFileRenameOutline /> Rename
+              </Button>
+              <Button
+
+                onClick={() => handleShare(document.id)}
+
+              >
+                <FaShare /> Share
+              </Button>
+
+              <Button
+
+                onClick={() => handleOpen(document.id)}
+
+              >
+                <FaFolderOpen /> Open
+              </Button>
             </div>
           </div>
         ))}

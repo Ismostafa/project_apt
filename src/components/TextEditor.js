@@ -1,18 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
-import { useParams, useLocation } from 'react-router-dom'; // Import useLocation
+import { useParams, useLocation } from 'react-router-dom';
 import './TextEditor.css';
 import Cookies from 'js-cookie';
-import { Client } from '@stomp/stompjs'; // Import STOMP Client
+import { Client } from '@stomp/stompjs';
+import SockJS from 'sockjs-client';
 
 const TextEditor = () => {
   const { id } = useParams();
-  const { state } = useLocation(); // Get state from location
-  const { role } = state || { role: 'Viewer' }; // Default to 'Viewer' if role is not provided
+  const { state } = useLocation();
+  const { role } = state || { role: 'Viewer' };
   const [documentContent, setDocumentContent] = useState('');
   const token = Cookies.get("token");
-  const [socket, setSocket] = useState(null);
-  const [stompClient, setStompClient] = useState(null);
+  const stompClientRef = useRef(null);
+  const contentRef = useRef(null);
 
   const config = {
     headers: { Authorization: `Bearer ${token}` },
@@ -28,44 +29,56 @@ const TextEditor = () => {
         console.error("Error fetching document:", error);
       });
 
-    // Initialize STOMP client
     const client = new Client({
-      brokerURL: 'ws://localhost:8080/ws',
-      onConnect: () => {
-        console.log('Connected to WebSocket');
-        client.subscribe(`/topic/documents/${id}`, (message) => {
-          const data = JSON.parse(message.body);
-          setDocumentContent(data.content);
-        });
-        const initialData = { documentId: id, content: '' };
-        client.publish({ destination: `/app/documents/${id}`, body: JSON.stringify(initialData) });
+      webSocketFactory: () => new SockJS('http://localhost:8080/ws'),
+      debug: function (str) {
+        console.log(str);
       },
-      onStompError: (frame) => {
-        console.error('Broker reported error: ' + frame.headers['message']);
-        console.error('Additional details: ' + frame.body);
+      reconnectDelay: 5000,
+      connectHeaders: {
+        Authorization: `Bearer ${token}`,
       },
     });
 
-    client.activate();
-    setStompClient(client);
+    client.onConnect = (frame) => {
+      console.log('Connected:', frame);
 
-    // Clean up WebSocket connection on component unmount
+      client.subscribe('/topic/updates', (message) => {
+        const updatedContent = JSON.parse(message.body);
+        setDocumentContent(updatedContent.content);
+        console.log('Received message:', message.body);
+      });
+    };
+
+    client.onStompError = (frame) => {
+      console.error('STOMP Error:', frame);
+    };
+
+    client.onWebSocketClose = () => {
+      console.log('WebSocket closed');
+    };
+
+    client.activate();
+    stompClientRef.current = client;
+
     return () => {
       if (client) {
         client.deactivate();
       }
     };
-  }, [id]);
+  }, [id, token]);
+
   const handleBoldClick = () => {
     document.execCommand('bold', false, '');
   };
-
+  
   const handleItalicClick = () => {
     document.execCommand('italic', false, '');
   };
+  
 
   const handleSave = () => {
-    const content = document.querySelector('.editable-content').innerHTML;
+    const content = contentRef.current.innerHTML;
     axios
       .post(
         `http://localhost:8080/api/files/${id}`,
@@ -79,6 +92,82 @@ const TextEditor = () => {
         console.error("Error saving document:", error);
       });
   };
+
+  const sendUpdate = (content) => {
+    if (stompClientRef.current && stompClientRef.current.connected) {
+      stompClientRef.current.publish({
+        destination: '/app/edit',
+        body: JSON.stringify({ content }),
+      });
+    }
+  };
+
+  const saveCaretPosition = () => {
+    const selection = window.getSelection();
+    const range = selection.getRangeAt(0);
+    const preCaretRange = range.cloneRange();
+    preCaretRange.selectNodeContents(contentRef.current);
+    preCaretRange.setEnd(range.startContainer, range.startOffset);
+    return preCaretRange.toString().length;
+  };
+
+  const restoreCaretPosition = (position) => {
+    const selection = window.getSelection();
+    const range = document.createRange();
+    let offset = 0;
+
+    const setPosition = (node) => {
+      if (node.nodeType === 3) {
+        const length = node.length;
+        if (offset + length >= position) {
+          range.setStart(node, position - offset);
+          range.collapse(true);
+          return true;
+        }
+        offset += length;
+      } else {
+        for (let i = 0; i < node.childNodes.length; i++) {
+          if (setPosition(node.childNodes[i])) return true;
+        }
+      }
+      return false;
+    };
+
+    setPosition(contentRef.current);
+    selection.removeAllRanges();
+    selection.addRange(range);
+  };
+
+  const handleContentChange = (event) => {
+    const content = event.target.innerHTML;
+    const caretPosition = saveCaretPosition();
+    setDocumentContent(content);
+  
+    if (event.key === 'Enter') {
+      event.preventDefault(); // Prevent default behavior (line break)
+  
+      // Get the current selection
+      const selection = window.getSelection();
+      const range = selection.getRangeAt(0);
+  
+      // Create a new <u> (underline) element
+      const uElement = document.createElement('u');
+      uElement.innerHTML = '&#8203;'; // Zero-width space to ensure the <u> tag is not collapsed
+  
+      // Insert the <u> element at the current caret position
+      range.insertNode(uElement);
+  
+      // Move the caret to the end of the inserted <u> element
+      range.setStartAfter(uElement);
+      range.collapse(true);
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
+  
+    sendUpdate(content);
+    setTimeout(() => restoreCaretPosition(caretPosition), 0);
+  };
+  
 
   return (
     <div className="text-editor">
@@ -95,6 +184,8 @@ const TextEditor = () => {
       <div
         className="editable-content"
         contentEditable={role !== 'Viewer'}
+        ref={contentRef}
+        onInput={handleContentChange}
         dangerouslySetInnerHTML={{ __html: documentContent }}
       />
     </div>

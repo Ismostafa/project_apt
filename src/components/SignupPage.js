@@ -35,7 +35,7 @@ const SignupPage = () => {
       localStorage.setItem("userid", response.data.id);
 
       console.log('usernameeeeeee:', response.data.username);
-      navigate("/");
+      navigate("/textediter");
 
     } catch (error) {
       console.error('Signup error:', error);

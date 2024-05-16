@@ -21,9 +21,9 @@
 }
 
 
-.logo {
-  font-size: 24px;
-  font-weight: bold;
+.logo-img {
+  width: 25px; /* Adjust the width as needed */
+  height: auto; /* Maintain aspect ratio */
 }
 
 .nav-list {

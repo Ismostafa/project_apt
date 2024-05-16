@@ -33,7 +33,7 @@ const Login = () => {
       localStorage.setItem("userid", response.data.id);
 
 
-      navigate("/");
+      navigate("/textediter");
 
       // Redirect or show success message
     } catch (error) {
