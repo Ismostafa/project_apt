@@ -8,6 +8,7 @@ import { Button } from 'react-bootstrap';
 import { MdDelete } from "react-icons/md";
 import { FaShare } from "react-icons/fa";
 import { FaFolderOpen } from "react-icons/fa6";
+import { MdCreateNewFolder } from "react-icons/md";
 
 function OwnedDocuments() {
   const [documents, setDocuments] = useState([]);
@@ -296,7 +297,13 @@ function OwnedDocuments() {
       )}
 
       <div>
-        <button className="create-button" onClick={handleCreate}>Create Document</button>
+        <Button
+          className="create-button"
+          onClick={handleCreate}
+
+        >
+          <MdCreateNewFolder  /> Create Document
+        </Button>
       </div>
     </div>
   );

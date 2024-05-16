@@ -14,7 +14,7 @@ const routes = {
   "/signup": () => <SignupPage />,
   "/textediter": () => <Nav />,
   "/editor/:id" : () => <TextEditor/>,
-  "/": () => <Header />,
+  "/": () => <Login />,
 "/ss": () => <Snow />,
 };
 export default routes;

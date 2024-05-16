@@ -15,12 +15,8 @@ function Header() {
           <li className="nav-item">
             <Link to="/login" className="nav-link">Logout</Link> {/* Use Link instead of button */}
           </li>
-          <li className="nav-item">
-            <Link to="/signup" className="nav-link">Signup</Link> {/* Use Link instead of button */}
-          </li>
-          <li className="nav-item">
-            <Link to="/textediter" className="nav-link">Text Editor</Link> {/* Use Link instead of button */}
-          </li>
+
+
         </ul>
       </nav>
     </header>
